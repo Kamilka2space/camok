@@ -1,0 +1,119 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+const memories = [
+  {
+    id: 1,
+    image: "https://i.imgur.com/vIiTjkR.jpeg",
+    text: "Помните тот вечер? Когда 10 минутную дорогу мы ходили 2 часа, смеялись, шутили, отдуши куып только потом зашли и в конце с Мадиной обьяснительную писали ахах",
+  },
+  {
+    id: 2,
+    image: "https://i.imgur.com/cr5CGjP.jpeg",
+    text: "В этот день я испытала такие эмоциональные качели емае, с самого начала дороги я волновалась ожидая встречу с вами, и когда мне сказали что проделав весь путь я не увижусь с вами а потом то что увижусь а потом вы еще обиделись на меня я не знала что делать, и то как мы заблудились когда ехали к вам ахах. Но в итоге встреча которую так ждала состоялась, я была очень рада, я так зарядилась вами честно, хоть провели не так много времени увидеть вас- это лучшее.Этот день был таким тёплым и уютным! ☕💙",
+  },
+];
+
+const hadiths = [
+  "«Кто бы ни оказал помощь мусульманину, на которого обрушилось несчастье в этом мире, Аллах отводит от него несчастье на том свете» (Муслим). Вы оказали мне самую прекрасну помощь в те моменты когда я нуждалась",
+  "Пророк (мир ему и благословение) сказал: 'Нет из вас верующего, пока он не пожелает брату своему того, чего желает себе.' (Бухари и Муслим)",
+  "Аллах любит тех, кто поддерживает связь с близкими и друзьями. (Муслим)"
+];
+
+const qualities = [
+  "Добрая и заботливая",
+  "Умная и мудрая",
+  "Весёлая и позитивная",
+  "Всегда поддерживает",
+  "Честная и искренняя",
+  "Светлый человек с огромным сердцем"
+];
+
+export default function MemorySite() {
+  const [selectedMemory, setSelectedMemory] = useState(null);
+  const [page, setPage] = useState("memories");
+
+  return (
+    <div className="flex flex-col items-center p-6 bg-gradient-to-r from-pink-300 to-blue-300 min-h-screen overflow-hidden relative">
+      <motion.h1
+        className="text-4xl font-bold text-white drop-shadow-md"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        Марзи апай, простите меня 💖
+      </motion.h1>
+      <p className="text-white mt-4">Я хочу напомнить вам, какая вы классная! ✨</p>
+      
+      <div className="flex gap-4 mt-6">
+        <Button onClick={() => setPage("memories")} className="bg-white text-black">Воспоминания</Button>
+        <Button onClick={() => setPage("qualities")} className="bg-white text-black">Твои качества</Button>
+        <Button onClick={() => setPage("canvaPage")} className="bg-white text-black">Специальная страница</Button>
+      </div>
+      
+      {page === "memories" && (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            {memories.map((memory) => (
+              <Card
+                key={memory.id}
+                className="cursor-pointer hover:shadow-xl transition"
+                onClick={() => setSelectedMemory(memory)}
+              >
+                <img src={memory.image} alt="Memory" className="rounded-lg" />
+              </Card>
+            ))}
+          </div>
+          
+          {selectedMemory && (
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-lg">
+                <img src={selectedMemory.image} alt="Memory" className="rounded-lg mb-4" />
+                <p className="text-lg">{selectedMemory.text}</p>
+                <Button onClick={() => setSelectedMemory(null)} className="mt-4">Закрыть</Button>
+              </div>
+            </motion.div>
+          )}
+        </>
+      )}
+      
+      {page === "qualities" && (
+        <motion.div
+          className="mt-8 p-4 bg-white rounded-lg shadow-lg max-w-md text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <h2 className="text-xl font-bold mb-2">Ваши потрясающие качества ✨</h2>
+          <ul className="text-gray-700 list-disc list-inside">
+            {qualities.map((quality, index) => (
+              <motion.li key={index} className="mb-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                {quality}
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+      )}
+      
+      {page === "canvaPage" && (
+        <motion.div className="mt-8 p-4 bg-white rounded-lg shadow-lg max-w-md text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <h2 className="text-xl font-bold mb-2">Специальная страница</h2>
+          <a href="https://kamilka2kosmos.my.canva.site/" target="_blank" rel="noopener noreferrer" className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-lg mt-4 inline-block">
+            🌟 Открыть специальную страницу 🌟
+          </a>
+        </motion.div>
+      )}
+      
+      <div className="mt-8 p-4 bg-white rounded-lg shadow-lg max-w-md text-center">
+        <h2 className="text-xl font-bold mb-2">Прекрасные хадисы о дружбе 💫</h2>
+        {hadiths.map((hadith, index) => (
+          <p key={index} className="text-gray-700 mb-2">"{hadith}"</p>
+        ))}
+      </div>
+    </div>
+  );
+}
